@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+
 import { fetchPlayers } from './apiCalls';
+
 import PlayerTable from '../../presentational/PlayerTable';
+import PlayerTableFilters from '../../presentational/PlayerTableFilters';
 
 class PlayerTableContainer extends Component {
   state = {
@@ -13,7 +16,10 @@ class PlayerTableContainer extends Component {
   render() {
     const { players } = this.state;
     return (
-      <PlayerTable players={players} />
+      <div>
+        <PlayerTableFilters />
+        <PlayerTable players={players} />
+      </div>
     );
   }
 }
