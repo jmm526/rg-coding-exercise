@@ -2,10 +2,12 @@ This is the repo for RotoGrinders Pair Programming Exercise for the technical in
 
 Make sure the you are able to load and start this app before the interview. If you have any problems or questions please reach out to nick.sarlo@rotogrinders.com
 
-###Instructions
+#Instructions
 
 -Fork this repo
+
 -Download the necessary modules using:
+
 ```sh
 npm install
 ```
