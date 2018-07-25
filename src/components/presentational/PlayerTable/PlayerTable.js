@@ -2,6 +2,8 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import Proptypes from 'prop-types';
 
+import PlayerRow from '../PlayerRow';
+
 const PlayerTable = ({ players }) => {
   return (
     <Table responsive>
@@ -15,15 +17,7 @@ const PlayerTable = ({ players }) => {
         </tr>
       </thead>
       <tbody>
-        {players.map(player => (
-        <tr key={player.id}>
-          <td>{player.name}</td>
-          <td>{player.position}</td>
-          <td>{player.team}</td>
-          <td>{player.height}</td>
-          <td>{player.weight}</td>
-        </tr>
-        ))}
+        {players.map(player => <PlayerRow player={player} key={player.id} />)}
       </tbody>
     </Table>
   );
