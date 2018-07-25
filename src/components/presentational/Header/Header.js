@@ -1,15 +1,13 @@
 import React from 'react';
-import { Navbar } from 'react-bootstrap';
+import logo from './logo.png';
+import './Header.css';
 
 const Header = () => {
   return (
-    <Navbar>
-      <Navbar.Header>
-        <Navbar.Brand>
-          <a href="#home">NFL Player List</a>
-        </Navbar.Brand>
-      </Navbar.Header>
-    </Navbar>
+    <div className="header">
+      NFL Player List
+      <img src={logo} alt="Logo" className="header-logo" />
+    </div>
   );
 }
 

@@ -10,11 +10,11 @@ const PlayerTable = ({ players }) => {
     <Table responsive>
       <thead>
         <tr>
-          <th><FontAwesomeIcon icon="sort" /> Name</th>
+          <th>Name <FontAwesomeIcon icon="sort" /></th>
           <th>Position</th>
           <th>Team</th>
-          <th><FontAwesomeIcon icon="sort" /> Height</th>
-          <th>Weight</th>
+          <th>Height <FontAwesomeIcon icon="sort" /></th>
+          <th>Weight <FontAwesomeIcon icon="sort" /></th>
         </tr>
       </thead>
       <tbody>
