@@ -22,7 +22,7 @@ class PlayerTableContainer extends Component {
 
   componentDidMount = async () => {
     const players = await fetchPlayers();
-    const ADP = await fetchADP();
+    const tempADP = await fetchADP();
 
     // Rearrange player names and add ADP's
     this.players = players.map(player => {
@@ -30,7 +30,7 @@ class PlayerTableContainer extends Component {
       player.name = nameArr[1] + ' ' + nameArr[0]
 
       let adpFound = false
-      ADP.forEach(adp => {
+      tempADP.forEach(adp => {
         if (player.id === adp.id) {
           player.adp = Number(adp.averagePick)
           adpFound = true
@@ -46,24 +46,25 @@ class PlayerTableContainer extends Component {
     this.createTrie()
 
     // Set state (default sorted by ADP)
-    this.setState({ ...this.state, players: this.players.sort(this.compareADP), sortColumn: 'ADP', sortUp: true });
+    await this.setState({...this.state, sortColumn: 'ADP'})
+    await this.setState({ ...this.state, players: this.players.sort(this.compare), sortUp: true });
   }
 
   updatePlayers = async () => {
     const statePlayers = this.triePlayers.filter(player => {
       return this.state.checks[player.position]
     })
-    this.setState({ players: statePlayers });
+    this.setState({ players: statePlayers.sort(this.compare) });
   }
 
   // Create Trie for searching
   createTrie = () => {
     this.trie = {}
-    this.players.forEach(player => {
-      if (!this.trie[player.name.charAt(0)]) { this.trie[player.name.charAt(0)] = {} }
-      this.trieRec(this.trie[player.name.charAt(0)], player.name.slice(1), player)
+    this.players.map(player => {
+      if (!this.trie[player.name.charAt(0).toLowerCase()]) { this.trie[player.name.charAt(0).toLowerCase()] = {} }
+      this.trieRec(this.trie[player.name.charAt(0).toLowerCase()], player.name.slice(1), player)
     })
-    this.triePlayers = this.players
+    this.triePlayers = this.players.slice()
   }
 
   // Recursive helper function for createTrie()
@@ -75,7 +76,7 @@ class PlayerTableContainer extends Component {
     }
   }
 
-  getPlayersTrie = () => {
+  getPlayersTrie = async () => {
     if (!this.state.text) { return this.players }
     let currNode = this.trie
     for (let i = 0; i < this.state.text.length; i++) {
@@ -98,27 +99,38 @@ class PlayerTableContainer extends Component {
 
   onChangeCheck = async (event) => {
     await this.setState({...this.state, checks: {...this.state.checks, [event.target.name]: !this.state.checks[event.target.name]}})
-    this.updatePlayers()
+    await this.updatePlayers()
   }
 
   onChangeText = async (event) => {
     await this.setState({...this.state, text: event.target.value})
-    this.triePlayers = this.getPlayersTrie()
+    this.triePlayers = await this.getPlayersTrie()
+    console.log(this.triePlayers)
     await this.updatePlayers()
   }
 
-  compareADP(a, b) {
-    if (a.adp > b.adp) return 1
-    if (a.adp < b.adp) return -1
-    return 0
+  compare = (a, b) => {
+    const sortCol = this.state.sortColumn.toLowerCase()
+    if (this.state.sortUp) {
+      if (a[sortCol] > b[sortCol]) return 1
+      if (a[sortCol] < b[sortCol]) return -1
+      return 0
+    } else {
+      if (a[sortCol] > b[sortCol]) return -1
+      if (a[sortCol] < b[sortCol]) return 1
+      return 0
+    }
   }
 
   onSort = async (evt) => {
-    console.log(evt.target)
-    if (this.state.sortColumn !== evt.target.name) {
-      await this.setState({...this.state, sortColumn: evt.target.name, sortUp: true})
-    } else {
-      await this.setState({...this.state, sortUp: !this.state.sortUp})
+    console.log(this.state.sortColumn, evt.target)
+    if (this.state.sortColumn && evt.target.name) {
+      if (this.state.sortColumn !== evt.target.name) {
+        await this.setState({...this.state, sortColumn: evt.target.name, sortUp: true})
+      } else {
+        await this.setState({...this.state, sortUp: !this.state.sortUp})
+      }
+      await this.updatePlayers()
     }
   }
 

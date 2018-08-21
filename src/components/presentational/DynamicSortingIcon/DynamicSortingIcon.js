@@ -12,7 +12,9 @@ const DynamicSortingIcon = (props) => {
     sortUp ? icon = 'sort-up' : icon = 'sort-down'
   }
   return (
-      <FontAwesomeIcon className={sClassName} icon={icon} onClick={onSort} name={name}/>      
+      <button className={sClassName} onClick={onSort} name={name} value={'hehehehe'}>
+        <FontAwesomeIcon icon={icon}/>
+      </button>      
   );
 }
 
