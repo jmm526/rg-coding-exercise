@@ -4,17 +4,19 @@ import Proptypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import PlayerRow from '../PlayerRow';
+import DynamicSortingIcon from '../DynamicSortingIcon'
 
-const PlayerTable = ({ players }) => {
+const PlayerTable = ({ players, onSort, sortColumn, sortUp }) => {
   return (
     <Table responsive>
       <thead>
         <tr>
-          <th>Name <FontAwesomeIcon icon="sort" /></th>
+          <th>Name <DynamicSortingIcon name='Name' onSort={onSort} sortColumn={sortColumn} sortUp={sortUp}/></th>
           <th>Position</th>
           <th>Team</th>
-          <th>Height <FontAwesomeIcon icon="sort" /></th>
-          <th>Weight <FontAwesomeIcon icon="sort" /></th>
+          <th>Height <DynamicSortingIcon  name='Height' onSort={onSort} sortColumn={sortColumn} sortUp={sortUp}/></th>
+          <th>Weight <DynamicSortingIcon  name='Weight' onSort={onSort} sortColumn={sortColumn} sortUp={sortUp}/></th>
+          <th>ADP <DynamicSortingIcon     name='ADP' onSort={onSort} sortColumn={sortColumn} sortUp={sortUp}/></th>
         </tr>
       </thead>
       <tbody>
